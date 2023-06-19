@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+{% extends 'index.html' %}
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<form method="post" action="{% url 'editproductdata' dataid=data.id %}" enctype="multipart/form-data">
+    {% csrf_token %}
+
+
+    <div>
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">update Products</h4>
+
+          <form class="forms-sample">
+            <div class="form-group">
+              <label for="exampleSelectGender">Category</label>
+                <select class="form-control" id="exampleSelectGender" name="Product-category">
+                  <option hidden="">{{data.product_category}}</option>
+                  {% for i in cate %}
+                  <option>{{i.category_name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            <div class="form-group">
+            <div class="form-group">
+              <label for="exampleInputName1">Product Name</label>
+              <input type="text" class="form-control" id="exampleInputName1" placeholder="Product Name" name="Product-name" value="{{data.product_name}}">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputName1">Product Price</label>
+              <input type="text" class="form-control" id="exampleInputName1" placeholder="Product Price" name="Product-price" value="{{data.product_price}}">
+            </div>
+            <div class="form-group">
+              <label for="exampleTextarea1">Description</label>
+              <textarea class="form-control" id="exampleTextarea1" rows="4" name="Product-description">{{data.product_description}}</textarea>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputName1">Brand</label>
+              <input type="text" class="form-control" id="exampleInputName1" placeholder="Product Band" name="Product-brand" value="{{data.product_brand}}">
+            </div>
+
+              <label>File upload</label>
+              <input type="file" name="img[]" class="file-upload-default">
+              <div class="input-group col-xs-12">
+                <img src="{{data.product_image.url}}" alt="" style="width: 100px;height: 100px;">
+                <input type="file" class="form-control file-upload-info" placeholder="Upload Image" name="Product-image">
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary mr-2">Submit</button>
+            <button class="btn btn-light">Cancel</button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+</form>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+{% if messages %}
+    {% for i in messages %}
+      {% if i.tags == 'warning' %}
+      <script>
+      swal('{{i}}', '','warning');
+      </script>
+      {% elif i.tags == 'error' %}
+      <script>
+      swal('{{i}}', '','error');
+      </script>
+      {% else %}
+     <script>
+      swal('{{i}}', '','success');
+      </script>
+      {% endif %}
+  {% endfor %}
+{% endif %}
+    
+</body>
+</html>
+{% endblock %} 
